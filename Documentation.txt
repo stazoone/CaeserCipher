@@ -1,0 +1,71 @@
+EXTRA CREDIT 1 (Caesar Cipher Decryption)
+
+PROBLEM EXPLANATION:
+
+This problem involves breaking a Caesar cipher using frequency analysis. A brute-force approach is implemented where histograms are computed for all possible shifts, and their distance to English letter frequencies is measured using different distance metrics (Chi-squared, Euclidean, Cosine). The shift with the smallest distance is identified as the best candidate for decryption.
+
+PROBLEM IDENTIFICATION:
+
+Caesar cipher encryption involves shifting letters by a fixed number of places. Decrypting an unknown shift requires testing all possible shifts and comparing letter distributions to known English character distributions.
+Function Descriptions
+
+
+FUNCTION HEADERS/DESCRIPTIONS:
+
+void displayMenu() - prints all the possible options during the menu / shows the user what options the app provides.
+
+void readTextFromFile(const char *filename, char *text) - takes as a parameter a name of a file which will be opened by the function and then a text will be read from that file.
+
+void encryptText()/decryptText(char *text, int shift) - these functions both work similarly. they take as a parameter a text and then shift the text to the left/right with an integer shift.
+
+void read_distribution(const char *filename, double distribution[ALPHABET_SIZE]) - reads from a given file the distribution of an alphabet(in this case the english one).
+
+void displayPercentageOccurence(double distribution[ALPHABET_SIZE]) - displays each letter's frequency from a given text as a percentage. ( takes as a parameter the given text's histogram) 
+
+void compute_histogram(const char *text, double histogram[ALPHABET_SIZE]) - takes as a parameter a text and computes all of it's letters frequency and then stores them in an array called histogram
+
+double chi_squared_distance/euclidian_distance/cosine_distance(const double hist1[ALPHABET_SIZE], const double hist2[ALPHABET_SIZE]) - these functions all work in similar ways. these take as parameters two differents histograms, one from a given text and another being the distribution of an alphabet. and by different formulas, these compute the distance between each of the two histogram's elements.
+
+void break_caesar_cipher(const char* text, int top_shifts[TOP_N], double top_distances[TOP_N], double (*distance_function)(const double[], const double[])) - this function is the one that brute forces the deciphering of a text. it takes as a parameter a text and a possible distance metric from the three possible ones. it then shifts the text through all possible shifts and seaches for the most likely one by comparing it to the distribution of the alphabet. it stores the 3 most possible shifts/distances in top_shifts/top_distances.
+
+
+
+CASES IN WHICH IT WORKS WELL:
+
+- works best on long encrypted texts where letter frequency analysis is reliable.
+
+- effective when the original text follows normal english letter distribution.
+
+
+
+CASES IN WHICH IT DOES NOT GIVE THE MOST SUITABLE RESULTS:
+
+-when using some characters such as - or \ or ] the console may not read them properly. i found a fix by setting the console to handle UTF-8 characters by including in main the following line:
+system("chcp 65001"); - this sets the code page to UTF-8 in WINDOWS.
+
+-cases in which the inputed text does not contain too many different characters ( because the text's histogram doesn't offer an accurate enough metric for which it can be compared to the alphabet's distribution )
+
+
+
+
+EXAMPLES: 
+
+- input text: Call me Ishmael. Some years ago—never mind how long precisely—having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world. It is a way I have of driving off the spleen and regulating the circulation. Whenever I find myself growing grim about the mouth; whenever it is a damp, drizzly November in my soul; whenever I find myself involuntarily pausing before coffin warehouses, and bringing up the rear of every funeral I meet; and especially whenever my hypos get such an upper hand of me, that it requires a strong moral principle to prevent me from deliberately stepping into the street, and methodically knocking people’s hats off—then, I account it high time to get to sea as soon as I can.
+
+ when using shift=2 all of the functions are accurate, cosine returning 2 and the other ones 1. it being a large text with a wide selection of characters benefits this.
+
+- input text : I cried all night.
+
+when using shift=6 all of the functions return 1 showing that this brute-force method doesn't work well for small texts.
+
+- input text : //...
+
+no matter the shift, they will all return 1 because the text doesn't contain letters and thus it has no possible way to decrypt it.
+
+
+
+
+
+from all the testing I've done, I've found the cosine distance metric being the most accurate, no matter the text with the euclidian distance metric and chi_squared distance metric being relatively similar in terms of results.
+
+

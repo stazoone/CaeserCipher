@@ -80,13 +80,3 @@ Result: KHOOR ZRUOG
 Enter the distance metric: chi_squared
 Most likely shift: 3
 ```
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Acknowledgments
-
-- Standard C library
-- ASCII character encoding
-- Frequency analysis techniques
